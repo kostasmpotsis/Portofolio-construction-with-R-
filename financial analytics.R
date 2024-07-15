@@ -1,5 +1,4 @@
-==========================================================================
-rm(list=ls(all=TRUE))
+m(list=ls(all=TRUE))
 
 #install packages 
 library(timeSeries)
@@ -49,8 +48,8 @@ T <- dim(Data)[1]
 k <- dim(Data)[2]
 
 #==========================================================================
-  # Define In-sample period, Out-of-sample period, and Top Performing Funds
-  #==========================================================================
+# Define In-sample period, Out-of-sample period, and Top Performing Funds
+#==========================================================================
 outofsampleperiod=48          # Portfolio Construction (out of sample period
 # 4 years )
 insample=T-outofsampleperiod  # Estimation (in sample period)     
@@ -302,17 +301,17 @@ for (i in seq(from = 1, to = 89, by = 1)) {
 ###########run multiple regrassion##################
 results_list2 <- list()
 for (i in seq(from=1,to=89,by=1)){
-MRres=lm(data5[,i]~ data5$Mkt.RF + data5$SMB + data5$HML +
-     data5$RMW + data5$CMA + data5$MOM + data5$BAB + data5$CAR)
-n <- length(MRres$residuals)
-significance_bound <- 1.96 / sqrt(n)
-# Diagnostic tests for the residuals
-# Autocorrelation of the residuals
-acfplot=acf(MRres$residuals, 100)
-pacf(MRres$residuals, 24)
-if(any(acfplot$acf[2:18]>significance_bound|acfplot$acf[2:18]<(-significance_bound))){
-  results_list2[[paste0('model',i)]] <- MRres
-}
+  MRres=lm(data5[,i]~ data5$Mkt.RF + data5$SMB + data5$HML +
+             data5$RMW + data5$CMA + data5$MOM + data5$BAB + data5$CAR)
+  n <- length(MRres$residuals)
+  significance_bound <- 1.96 / sqrt(n)
+  # Diagnostic tests for the residuals
+  # Autocorrelation of the residuals
+  acfplot=acf(MRres$residuals, 100)
+  pacf(MRres$residuals, 24)
+  if(any(acfplot$acf[2:18]>significance_bound|acfplot$acf[2:18]<(-significance_bound))){
+    results_list2[[paste0('model',i)]] <- MRres
+  }
 }
 #some models have probelm need to fix with MA model the autocorelation 
 
@@ -370,9 +369,9 @@ results_list3 <- list()
 for (i in seq(from=1,to=89,by=1)){
   MRres=lm(data5[,i]~ data5$Mkt.RF + data5$SMB + data5$HML +
              data5$RMW + data5$CMA + data5$MOM + data5$BAB + data5$CAR)
-if(jarque.bera.test(MRres$residuals)$p.value<0.05){
-  print(c("reject HO no normality errors",i))
-}
+  if(jarque.bera.test(MRres$residuals)$p.value<0.05){
+    print(c("reject HO no normality errors",i))
+  }
 }
 #models 43 and 49 has no normal errors 
 MRres=lm(data5[,43]~ data5$Mkt.RF + data5$SMB + data5$HML +
@@ -387,7 +386,7 @@ qqline(residuals(MRres))
 
 #to fix the errors for the 28th fund with garch model 
 X<-matrix(cbind(data5$Mkt.RF,data5$SMB,data5$HML, 
-                  data5$RMW,data5$CMA,data5$MOM,data5$BAB,data5$CAR),ncol=8)
+                data5$RMW,data5$CMA,data5$MOM,data5$BAB,data5$CAR),ncol=8)
 
 spec <- ugarchspec(variance.model = list(model = "sGARCH", garchOrder=c(1,1)), 
                    mean.model = list(armaOrder=c(0,0), include.mean = TRUE, external.regressors = X),
